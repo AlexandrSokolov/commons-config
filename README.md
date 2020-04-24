@@ -42,9 +42,22 @@ public interface Config {
 ```
 
 ###### 3 Get a config proxy:
+From `InputStream` object, useful in tests:
 ```
 Config config = Configs.fileConfig(getInputStreamFromPropertyFile(""))
       .proxy(TestPropertiesConfig.class);
+```
+From a file, located on the path, managed by a combination of
+ a system property/variable, that refers to the folder location and a file name:
+```
+Config config = Configs.fileConfig(SYSTEM_VARIABLE_NAME, PROP_FILE_NAME)
+      .proxy(TestPropertiesConfig.class);
+```
+
+
+###### 4 Use a config proxy:
+```
+
 
 // returns 'test.value1'     
 String value = config.someProperty1(); 
