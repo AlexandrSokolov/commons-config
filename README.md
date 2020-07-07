@@ -64,3 +64,33 @@ String value = config.someProperty1();
       
 InputStream getInputStreamFromPropertyFile(String fileName) { ... }
 ```
+
+###### 5 Produce configuration in the managed (JEE) environment:
+
+1. Define interface:
+
+    ```
+    public interface Configuration {
+    
+      String CONFIG_FOLDER_VARIABLE = "config.dir";
+      String CONFIG_FILE = "template.project.properties";
+      ...
+    ```
+2. Create a producer:
+
+    ```
+    public class ConfigurationProducer {
+    
+      @Produces
+      public Configuration produce(){
+        return Configs.fileConfig(CONFIG_FOLDER_VARIABLE, CONFIG_FILE)
+          .proxy(Configuration.class);
+      }
+    }
+    
+    ```
+3. Now you can inject it:
+    ```
+    @Inject
+    Configuration config;
+    ```
