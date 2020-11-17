@@ -118,6 +118,52 @@ InputStream getInputStreamFromPropertyFile(String fileName) { ... }
     ```
 2. Create a producer:
 
+    2.1    A property file is located in the jar file.
+    
+      For instance a jar file is build inside of `config` maven project
+        
+      Put your `$CONFIG_FILE` file into the `config` folder:
+        
+      ```
+      $ ls -1 config/
+      template.project.properties
+      pom.xml
+      src
+      ``` 
+        
+      Extend your config/pom.xml to include the property file into the resources:
+      
+      ```
+        <build>
+          <resources>
+            <resource>
+              <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+              <directory>${project.basedir}</directory>
+              <includes>
+                <include>template.project.properties</include>
+              </includes>
+            </resource>
+          </resources>
+      ```
+        
+      Add a config producer:
+      
+      ```
+      public class ConfigurationProducer {
+      
+        @Produces
+        public Configuration produce(){
+          return Configs.fileConfig(
+             ConfigurationProducer.class.getResourceAsStream("/"+ CONFIG_FILE)))
+            .proxy(Configuration.class);
+        }
+      }
+      ```
+
+    2.2    In case a property file is located under a folder, 
+    referred by `CONFIG_FOLDER_VARIABLE` system variable.
     ```
     public class ConfigurationProducer {
     
@@ -127,7 +173,6 @@ InputStream getInputStreamFromPropertyFile(String fileName) { ... }
           .proxy(Configuration.class);
       }
     }
-    
     ```
 3. Now you can inject it:
     ```
