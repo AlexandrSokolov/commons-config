@@ -14,6 +14,9 @@ public interface TestPropertiesConfig {
   String MAP_ITEMS_KEY = "test.key.map";
   String MAP_ITEMS_KEY_CUSTOM_SEPARATOR = "test.key.custom.map";
   String NOT_EXISTING_PROP_KEY = "test.not.existing.key";
+  String MAP_LIST_ITEMS_KEY = "test.key.map.of.lists";
+  String MAP_OF_MAPS_KEY = "test.key.map.of.maps";
+  String MAP_OF_MAPS_OF_LISTS_KEY = "test.key.map.of.maps.of.lists";
 
   @PropertyKey(STRING_PROP_KEY1)
   String someProperty1();
@@ -54,4 +57,12 @@ public interface TestPropertiesConfig {
   @PropertyKey(NOT_EXISTING_PROP_KEY)
   Map<String, String> notExistingMap();
 
+  @PropertyKey(MAP_LIST_ITEMS_KEY)
+  Map<String, List<String>> defaultMapOfLists();
+
+  @PropertyKey(MAP_OF_MAPS_KEY)
+  Map<String, Map<String, String>> defaultMapOfMaps();
+
+  @PropertyKey(MAP_OF_MAPS_OF_LISTS_KEY)
+  Map<String, Map<String, List<String>>> defaultMapOfMapsOfLists();
 }

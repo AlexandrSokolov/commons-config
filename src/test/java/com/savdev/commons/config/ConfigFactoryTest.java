@@ -1,16 +1,17 @@
 package com.savdev.commons.config;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
+
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 
 public class ConfigFactoryTest {
 
@@ -135,6 +136,54 @@ public class ConfigFactoryTest {
         .proxy(TestPropertiesConfig.class)
         .notExistingMap()
         .isEmpty()
+    );
+  }
+
+  @Test
+  public void testMapDefaultOfLists(){
+    Assert.assertEquals(
+      ImmutableMap.of(
+        "key1", Lists.newArrayList("value1", "value2", "value3"),
+        "key2", Lists.newArrayList("value2"),
+        "key3", Lists.newArrayList("value4", "value5")),
+      Configs.fileConfig(testInputStream(SINGLE_STRING_PROPERTY))
+             .proxy(TestPropertiesConfig.class)
+             .defaultMapOfLists()
+    );
+  }
+
+  @Test
+  public void testMapDefaultOfMaps(){
+    Assert.assertEquals(
+      ImmutableMap.of(
+        "key1", ImmutableMap.of("subkey1", "value1", "subkey2", "value2"),
+        "key2", ImmutableMap.of("subkey3", "value2"),
+        "key3", ImmutableMap.of("subkey4", "value4", "subkey5", "value5")),
+      Configs.fileConfig(testInputStream(SINGLE_STRING_PROPERTY))
+             .proxy(TestPropertiesConfig.class)
+             .defaultMapOfMaps()
+    );
+  }
+
+  @Test
+  public void testMapDefaultOfMapsOfLists(){
+    Assert.assertEquals(
+      ImmutableMap.of(
+        "key1", ImmutableMap.of(
+          "subkey1",
+              Lists.newArrayList("value1", "value2", "value3"),
+          "subkey2",
+              Lists.newArrayList("value2_1", "value2_2")),
+        "key2", ImmutableMap.of(
+          "subkey3", Collections.singletonList("value2")),
+        "key3", ImmutableMap.of(
+          "subkey4",
+          Lists.newArrayList("value4_1", "value4_2"),
+          "subkey5",
+          Collections.singletonList("value5"))),
+      Configs.fileConfig(testInputStream(SINGLE_STRING_PROPERTY))
+             .proxy(TestPropertiesConfig.class)
+             .defaultMapOfMapsOfLists()
     );
   }
 
